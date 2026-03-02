@@ -7,6 +7,7 @@ export default {
     finance: "財務",
     demandForecast: "需要予測",
     restocking: "補充発注",
+    reports: "レポート",
     companyName: "触媒コンポーネンツ",
     subtitle: "在庫管理システム",
   },
@@ -223,6 +224,37 @@ export default {
     placeOrder: "発注する",
     orderPlaced: "補充注文 {orderNumber} が正常に送信されました！",
     submitting: "送信中...",
+  },
+
+  // Reports
+  reports: {
+    title: "パフォーマンスレポート",
+    description: "四半期ごとのパフォーマンス指標と月次トレンドを表示",
+    quarterly: {
+      title: "四半期パフォーマンス",
+      quarter: "四半期",
+      totalOrders: "総注文数",
+      totalRevenue: "総収益",
+      avgOrderValue: "平均注文額",
+      fulfillmentRate: "履行率",
+    },
+    monthly: {
+      title: "月次収益トレンド",
+    },
+    mom: {
+      title: "前月比分析",
+      month: "月",
+      orders: "注文",
+      revenue: "収益",
+      change: "変化",
+      growthRate: "成長率",
+    },
+    stats: {
+      totalRevenue: "総収益（年初来）",
+      avgMonthly: "平均月次収益",
+      totalOrders: "総注文数（年初来）",
+      bestQuarter: "最高四半期",
+    },
   },
 
   // Filters
