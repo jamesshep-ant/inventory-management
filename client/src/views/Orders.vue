@@ -27,6 +27,36 @@
         </div>
       </div>
 
+      <div class="card" v-if="restockingOrders.length > 0">
+        <div class="card-header">
+          <h3 class="card-title">{{ t('orders.submittedOrders.title') }} ({{ restockingOrders.length }})</h3>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ t('orders.table.orderNumber') }}</th>
+                <th>{{ t('orders.table.items') }}</th>
+                <th>{{ t('orders.table.totalValue') }}</th>
+                <th>{{ t('orders.submittedOrders.submitted') }}</th>
+                <th>{{ t('orders.submittedOrders.leadTime') }}</th>
+                <th>{{ t('orders.submittedOrders.expectedArrival') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in restockingOrders" :key="order.id">
+                <td><strong>{{ order.order_number }}</strong></td>
+                <td>{{ t('orders.itemsCount', { count: order.items.length }) }}</td>
+                <td><strong>{{ currencySymbol }}{{ order.total_value.toLocaleString() }}</strong></td>
+                <td>{{ formatDate(order.submitted_date) }}</td>
+                <td>{{ order.lead_time_days }} {{ t('dashboard.inventoryShortages.days') }}</td>
+                <td>{{ formatDate(order.expected_arrival) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">{{ t('orders.allOrders') }} ({{ orders.length }})</h3>
@@ -95,6 +125,7 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const restockingOrders = ref([])
 
     // Use shared filters
     const {
@@ -109,7 +140,11 @@ export default {
       try {
         loading.value = true
         const filters = getCurrentFilters()
-        const fetchedOrders = await api.getOrders(filters)
+        // Fetch customer orders and restocking orders in parallel
+        const [fetchedOrders, fetchedRestocking] = await Promise.all([
+          api.getOrders(filters),
+          api.getRestockingOrders()
+        ])
 
         // Sort orders by order_date (earliest first)
         orders.value = fetchedOrders.sort((a, b) => {
@@ -117,6 +152,7 @@ export default {
           const dateB = new Date(b.order_date)
           return dateA - dateB
         })
+        restockingOrders.value = fetchedRestocking
       } catch (err) {
         error.value = 'Failed to load orders: ' + err.message
       } finally {
@@ -160,6 +196,7 @@ export default {
       loading,
       error,
       orders,
+      restockingOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,

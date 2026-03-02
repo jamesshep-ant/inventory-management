@@ -2,9 +2,14 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime, timedelta
+import uuid
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders
 
 app = FastAPI(title="Factory Inventory Management System")
+
+# In-memory restocking orders (session-scoped, resets on server restart)
+restocking_orders: list = []
 
 # Quarter mapping for date filtering
 QUARTER_MAP = {
@@ -119,6 +124,25 @@ class CreatePurchaseOrderRequest(BaseModel):
     unit_cost: float
     expected_delivery_date: str
     notes: Optional[str] = None
+
+class RestockingOrderItem(BaseModel):
+    sku: str
+    name: str
+    quantity: int
+    unit_cost: float
+
+class RestockingOrder(BaseModel):
+    id: str
+    order_number: str
+    items: List[RestockingOrderItem]
+    total_value: float
+    submitted_date: str
+    lead_time_days: int
+    expected_arrival: str
+    status: str
+
+class CreateRestockingOrderRequest(BaseModel):
+    items: List[RestockingOrderItem]
 
 # API endpoints
 @app.get("/")
@@ -303,6 +327,37 @@ def get_monthly_trends():
     result = list(months.values())
     result.sort(key=lambda x: x['month'])
     return result
+
+@app.get("/api/restocking-orders", response_model=List[RestockingOrder])
+def get_restocking_orders():
+    """Get all submitted restocking orders"""
+    return restocking_orders
+
+@app.post("/api/restocking-orders", response_model=RestockingOrder, status_code=201)
+def create_restocking_order(request: CreateRestockingOrderRequest):
+    """Submit a restocking order with a fixed 14-day lead time"""
+    if not request.items:
+        raise HTTPException(status_code=400, detail="Order must contain at least one item")
+
+    now = datetime.now()
+    lead_time = 14  # fixed per spec
+    total = sum(item.quantity * item.unit_cost for item in request.items)
+
+    # Order number: RST-YYYY-NNNN, sequential within session
+    order_num = f"RST-{now.year}-{len(restocking_orders) + 1:04d}"
+
+    order = {
+        "id": str(uuid.uuid4())[:8],
+        "order_number": order_num,
+        "items": [item.model_dump() for item in request.items],
+        "total_value": round(total, 2),
+        "submitted_date": now.isoformat(),
+        "lead_time_days": lead_time,
+        "expected_arrival": (now + timedelta(days=lead_time)).isoformat(),
+        "status": "Submitted"
+    }
+    restocking_orders.append(order)
+    return order
 
 if __name__ == "__main__":
     import uvicorn
