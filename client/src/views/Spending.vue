@@ -652,11 +652,11 @@ export default {
 }
 
 .stat-change.positive {
-  color: #059669;
+  color: var(--success);
 }
 
 .stat-change.negative {
-  color: #dc2626;
+  color: var(--danger);
 }
 
 .change-icon {
@@ -678,7 +678,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .legend-dot {
@@ -688,7 +688,7 @@ export default {
 }
 
 .legend-dot.procurement {
-  background: #3b82f6;
+  background: var(--accent);
 }
 .legend-dot.operational {
   background: #8b5cf6;
@@ -700,10 +700,10 @@ export default {
   background: #f59e0b;
 }
 .legend-dot.revenue-color {
-  background: #0f172a;
+  background: var(--text-primary);
 }
 .legend-dot.cost-color {
-  background: #ef4444;
+  background: var(--danger);
 }
 
 .stats-grid-finance {
@@ -714,21 +714,21 @@ export default {
 }
 
 .revenue-card {
-  border-left: 4px solid #0f172a;
+  border-left: 4px solid var(--text-primary);
 }
 
 .cost-card {
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid var(--danger);
 }
 
 .profit-card {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--accent);
 }
 
 .stat-meta {
   margin-top: 0.5rem;
   font-size: 0.813rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .bar-group-revenue {
@@ -761,11 +761,11 @@ export default {
 }
 
 .revenue-bar {
-  background: #0f172a;
+  background: var(--text-primary);
 }
 
 .cost-bar {
-  background: #ef4444;
+  background: var(--danger);
 }
 
 .revenue-bar:hover,
@@ -790,8 +790,8 @@ export default {
   justify-content: space-between;
   padding-right: 1rem;
   font-size: 0.75rem;
-  color: #94a3b8;
-  border-right: 1px solid #e2e8f0;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border);
 }
 
 .chart-area {
@@ -842,7 +842,7 @@ export default {
 }
 
 .bar-segment.procurement {
-  background: #3b82f6;
+  background: var(--accent);
 }
 .bar-segment.operational {
   background: #8b5cf6;
@@ -862,7 +862,7 @@ export default {
   margin-top: 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .two-column-grid {
@@ -891,26 +891,30 @@ export default {
 
 .category-name {
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-primary);
 }
 
 .category-amount {
   font-weight: 700;
-  color: #2563eb;
+  color: var(--accent);
   font-size: 1.125rem;
 }
 
 .category-bar-container {
   width: 100%;
   height: 8px;
-  background: #f1f5f9;
+  background: var(--bg-hover);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .category-bar {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(
+    90deg,
+    var(--lfc-red) 0%,
+    var(--lfc-red-dark) 100%
+  );
   border-radius: 4px;
   transition: width 0.6s ease;
 }
@@ -922,7 +926,7 @@ export default {
 }
 
 .percentage {
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .change {
@@ -930,11 +934,11 @@ export default {
 }
 
 .change.positive {
-  color: #059669;
+  color: var(--success);
 }
 
 .change.negative {
-  color: #dc2626;
+  color: var(--danger);
 }
 
 .transactions-card {
@@ -955,7 +959,7 @@ export default {
 .transactions-table thead {
   position: sticky;
   top: 0;
-  background: #f8fafc;
+  background: var(--bg-subtle);
   z-index: 1;
 }
 
@@ -963,11 +967,11 @@ export default {
   text-align: left;
   padding: 0.625rem 0.75rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
 }
 
 .transactions-table th.text-right {
@@ -976,7 +980,7 @@ export default {
 
 .transactions-table td {
   padding: 0.75rem 0.75rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--bg-hover);
   font-size: 0.875rem;
 }
 
@@ -986,37 +990,37 @@ export default {
 }
 
 .transactions-table tbody tr:hover {
-  background: #f8fafc;
+  background: var(--bg-subtle);
 }
 
 .transactions-table tbody tr.clickable-row:hover {
-  background: #eff6ff;
+  background: var(--accent-bg);
 }
 
 .transaction-id {
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
   font-family: "Monaco", "Courier New", monospace;
   font-size: 0.813rem;
 }
 
 .transaction-description {
-  color: #0f172a;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .transaction-vendor {
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .transaction-date {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.813rem;
 }
 
 .transaction-amount {
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
 }
 
 .text-right {
