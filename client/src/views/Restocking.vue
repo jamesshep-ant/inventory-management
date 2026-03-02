@@ -422,7 +422,7 @@ export default {
   justify-content: space-between;
   margin-bottom: 0.5rem;
   font-size: 0.813rem;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -431,11 +431,11 @@ export default {
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
-  background: #e2e8f0;
+  background: var(--border);
   border-radius: 3px;
   outline: none;
   cursor: pointer;
-  accent-color: #2563eb;
+  accent-color: var(--accent);
 }
 
 /* Thumb: larger for easy grabbing */
@@ -445,29 +445,29 @@ export default {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #2563eb;
+  background: var(--accent);
   cursor: pointer;
   border: 3px solid #ffffff;
   box-shadow:
-    0 0 0 2px #2563eb,
-    0 2px 6px rgba(37, 99, 235, 0.3);
+    0 0 0 2px var(--accent),
+    0 2px 6px rgba(200, 16, 46, 0.3);
   transition: box-shadow 0.15s ease;
 }
 
 .budget-slider::-webkit-slider-thumb:hover {
   box-shadow:
-    0 0 0 3px #bfdbfe,
-    0 2px 8px rgba(37, 99, 235, 0.4);
+    0 0 0 3px rgba(200, 16, 46, 0.2),
+    0 2px 8px rgba(200, 16, 46, 0.4);
 }
 
 .budget-slider::-moz-range-thumb {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #2563eb;
+  background: var(--accent);
   cursor: pointer;
   border: 3px solid #ffffff;
-  box-shadow: 0 0 0 2px #2563eb;
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 /* ---- Budget summary: 3-column grid ---- */
@@ -476,7 +476,7 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border);
 }
 
 .budget-stat {
@@ -488,7 +488,7 @@ export default {
 .budget-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -496,16 +496,16 @@ export default {
 .budget-value {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   letter-spacing: -0.025em;
 }
 
 .budget-value.allocated {
-  color: #2563eb;
+  color: var(--accent);
 }
 
 .budget-value.remaining {
-  color: #059669;
+  color: var(--success);
 }
 
 /* ---- Recommendations table ---- */
@@ -520,7 +520,7 @@ export default {
 
 .not-covered-note {
   font-size: 0.813rem;
-  color: #64748b;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -528,7 +528,7 @@ export default {
 .empty-state {
   padding: 2.5rem;
   text-align: center;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.938rem;
 }
 
@@ -543,17 +543,17 @@ export default {
 }
 
 .success-message {
-  background: #d1fae5;
-  color: #065f46;
+  background: var(--success-bg);
+  color: var(--success);
   padding: 0.75rem 1.25rem;
   border-radius: 6px;
   font-size: 0.938rem;
   font-weight: 500;
-  border: 1px solid #a7f3d0;
+  border: 1px solid rgba(10, 125, 62, 0.3);
 }
 
 .place-order-btn {
-  background: #2563eb;
+  background: var(--accent);
   color: #ffffff;
   border: none;
   padding: 0.75rem 1.75rem;
@@ -567,12 +567,12 @@ export default {
 }
 
 .place-order-btn:hover:not(:disabled) {
-  background: #1d4ed8;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  background: var(--accent-dark);
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.3);
 }
 
 .place-order-btn:disabled {
-  background: #94a3b8;
+  background: var(--text-muted);
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -584,7 +584,7 @@ export default {
 
 .drag-handle {
   cursor: grab;
-  color: #94a3b8;
+  color: var(--text-muted);
   width: 30px;
   text-align: center;
   user-select: none;
@@ -610,20 +610,20 @@ tr.dragging {
 
 /* Drop target indicator — blue top border shows where the row will land */
 tr.drag-over td {
-  border-top: 2px solid #2563eb;
+  border-top: 2px solid var(--accent);
 }
 
 /* ---- Recommendations card header additions ---- */
 .drag-hint {
   margin: 0.25rem 0 0 0;
   font-size: 0.813rem;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 .reset-priority-btn {
   background: transparent;
-  color: #2563eb;
-  border: 1px solid #2563eb;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   padding: 0.375rem 0.875rem;
   border-radius: 4px;
   font-size: 0.813rem;
@@ -633,6 +633,6 @@ tr.drag-over td {
 }
 
 .reset-priority-btn:hover {
-  background: #eff6ff;
+  background: var(--accent-bg);
 }
 </style>
