@@ -1,17 +1,17 @@
 <template>
   <div class="restocking">
     <div class="page-header">
-      <h2>{{ t('restocking.title') }}</h2>
-      <p>{{ t('restocking.description') }}</p>
+      <h2>{{ t("restocking.title") }}</h2>
+      <p>{{ t("restocking.description") }}</p>
     </div>
 
-    <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
+    <div v-if="loading" class="loading">{{ t("common.loading") }}</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else>
       <!-- Budget Card -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ t('restocking.budgetCard.title') }}</h3>
+          <h3 class="card-title">{{ t("restocking.budgetCard.title") }}</h3>
         </div>
 
         <div class="budget-slider-section">
@@ -31,16 +31,28 @@
 
         <div class="budget-summary">
           <div class="budget-stat">
-            <span class="budget-label">{{ t('restocking.budgetCard.selected') }}</span>
-            <span class="budget-value">{{ formatCurrency(budget, currentCurrency) }}</span>
+            <span class="budget-label">{{
+              t("restocking.budgetCard.selected")
+            }}</span>
+            <span class="budget-value">{{
+              formatCurrency(budget, currentCurrency)
+            }}</span>
           </div>
           <div class="budget-stat">
-            <span class="budget-label">{{ t('restocking.budgetCard.allocated') }}</span>
-            <span class="budget-value allocated">{{ formatCurrency(allocatedTotal, currentCurrency) }}</span>
+            <span class="budget-label">{{
+              t("restocking.budgetCard.allocated")
+            }}</span>
+            <span class="budget-value allocated">{{
+              formatCurrency(allocatedTotal, currentCurrency)
+            }}</span>
           </div>
           <div class="budget-stat">
-            <span class="budget-label">{{ t('restocking.budgetCard.remaining') }}</span>
-            <span class="budget-value remaining">{{ formatCurrency(remainingBudget, currentCurrency) }}</span>
+            <span class="budget-label">{{
+              t("restocking.budgetCard.remaining")
+            }}</span>
+            <span class="budget-value remaining">{{
+              formatCurrency(remainingBudget, currentCurrency)
+            }}</span>
           </div>
         </div>
       </div>
@@ -49,20 +61,24 @@
       <div class="card">
         <div class="card-header">
           <div>
-            <h3 class="card-title">{{ t('restocking.recommendations.title') }}</h3>
-            <p class="drag-hint">{{ t('restocking.recommendations.dragHint') }}</p>
+            <h3 class="card-title">
+              {{ t("restocking.recommendations.title") }}
+            </h3>
+            <p class="drag-hint">
+              {{ t("restocking.recommendations.dragHint") }}
+            </p>
           </div>
           <button
             v-if="isCustomOrder"
             class="reset-priority-btn"
             @click="resetPriority"
           >
-            {{ t('restocking.recommendations.resetPriority') }}
+            {{ t("restocking.recommendations.resetPriority") }}
           </button>
         </div>
 
         <div v-if="recommendations.length === 0" class="empty-state">
-          {{ t('restocking.recommendations.empty') }}
+          {{ t("restocking.recommendations.empty") }}
         </div>
 
         <div v-else class="table-container">
@@ -70,13 +86,13 @@
             <thead>
               <tr>
                 <th class="drag-handle-header"></th>
-                <th>{{ t('restocking.recommendations.sku') }}</th>
-                <th>{{ t('restocking.recommendations.item') }}</th>
-                <th>{{ t('restocking.recommendations.trend') }}</th>
-                <th>{{ t('restocking.recommendations.forecastGap') }}</th>
-                <th>{{ t('restocking.recommendations.unitCost') }}</th>
-                <th>{{ t('restocking.recommendations.recommendedQty') }}</th>
-                <th>{{ t('restocking.recommendations.lineTotal') }}</th>
+                <th>{{ t("restocking.recommendations.sku") }}</th>
+                <th>{{ t("restocking.recommendations.item") }}</th>
+                <th>{{ t("restocking.recommendations.trend") }}</th>
+                <th>{{ t("restocking.recommendations.forecastGap") }}</th>
+                <th>{{ t("restocking.recommendations.unitCost") }}</th>
+                <th>{{ t("restocking.recommendations.recommendedQty") }}</th>
+                <th>{{ t("restocking.recommendations.lineTotal") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -91,25 +107,36 @@
                 @dragend="onDragEnd"
                 :class="{
                   'not-covered': rec.allocatedQty === 0,
-                  'dragging': draggedIndex === index,
-                  'drag-over': dragOverIndex === index && draggedIndex !== index
+                  dragging: draggedIndex === index,
+                  'drag-over':
+                    dragOverIndex === index && draggedIndex !== index,
                 }"
               >
                 <td class="drag-handle">⠿</td>
-                <td><strong>{{ rec.sku }}</strong></td>
+                <td>
+                  <strong>{{ rec.sku }}</strong>
+                </td>
                 <td>{{ rec.name }}</td>
                 <td>
-                  <span :class="['badge', rec.trend]">{{ t(`trends.${rec.trend}`) }}</span>
+                  <span :class="['badge', rec.trend]">{{
+                    t(`trends.${rec.trend}`)
+                  }}</span>
                 </td>
                 <td>{{ rec.gap }}</td>
                 <td>{{ formatCurrency(rec.unit_cost, currentCurrency) }}</td>
                 <td>
-                  <span v-if="rec.allocatedQty > 0">{{ rec.allocatedQty }}</span>
+                  <span v-if="rec.allocatedQty > 0">{{
+                    rec.allocatedQty
+                  }}</span>
                   <!-- Show "not covered" note instead of a zero qty for budget-exceeded rows -->
-                  <span v-else class="not-covered-note">{{ t('restocking.recommendations.notCovered') }}</span>
+                  <span v-else class="not-covered-note">{{
+                    t("restocking.recommendations.notCovered")
+                  }}</span>
                 </td>
                 <td>
-                  <span v-if="rec.allocatedQty > 0">{{ formatCurrency(rec.lineTotal, currentCurrency) }}</span>
+                  <span v-if="rec.allocatedQty > 0">{{
+                    formatCurrency(rec.lineTotal, currentCurrency)
+                  }}</span>
                   <span v-else class="not-covered-note">—</span>
                 </td>
               </tr>
@@ -128,7 +155,9 @@
           :disabled="submitting || orderItems.length === 0"
           @click="placeOrder"
         >
-          {{ submitting ? t('restocking.submitting') : t('restocking.placeOrder') }}
+          {{
+            submitting ? t("restocking.submitting") : t("restocking.placeOrder")
+          }}
         </button>
       </div>
     </div>
@@ -136,216 +165,224 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue'
-import { api } from '../api'
-import { useI18n } from '../composables/useI18n'
-import { formatCurrency } from '../utils/currency'
+import { ref, computed, watch, onMounted } from "vue";
+import { api } from "../api";
+import { useI18n } from "../composables/useI18n";
+import { formatCurrency } from "../utils/currency";
 
 export default {
-  name: 'Restocking',
+  name: "Restocking",
   setup() {
-    const { t, currentCurrency } = useI18n()
+    const { t, currentCurrency } = useI18n();
 
     // --- Reactive state ---
-    const loading = ref(true)
-    const error = ref(null)
-    const forecasts = ref([])
-    const inventory = ref([])
-    const budget = ref(10000)
-    const submitting = ref(false)
-    const successMessage = ref(null)
+    const loading = ref(true);
+    const error = ref(null);
+    const forecasts = ref([]);
+    const inventory = ref([]);
+    const budget = ref(10000);
+    const submitting = ref(false);
+    const successMessage = ref(null);
 
     // --- O(1) lookup map: sku → inventory item ---
     const inventoryBySku = computed(() => {
-      const map = new Map()
+      const map = new Map();
       for (const item of inventory.value) {
-        map.set(item.sku, item)
+        map.set(item.sku, item);
       }
-      return map
-    })
+      return map;
+    });
 
     // --- Layer 1: Base candidates (no sort, no allocation) ---
     // Pure derive: join forecasts ↔ inventory, compute gap, filter actionable items.
     const candidates = computed(() => {
-      const result = []
+      const result = [];
       for (const forecast of forecasts.value) {
-        const invItem = inventoryBySku.value.get(forecast.item_sku)
-        if (!invItem || typeof invItem.unit_cost !== 'number') continue
+        const invItem = inventoryBySku.value.get(forecast.item_sku);
+        if (!invItem || typeof invItem.unit_cost !== "number") continue;
 
-        const gap = forecast.forecasted_demand - forecast.current_demand
-        if (gap <= 0) continue
+        const gap = forecast.forecasted_demand - forecast.current_demand;
+        if (gap <= 0) continue;
 
         result.push({
           sku: forecast.item_sku,
           name: forecast.item_name,
           trend: forecast.trend,
           gap,
-          unit_cost: invItem.unit_cost
-        })
+          unit_cost: invItem.unit_cost,
+        });
       }
-      return result
-    })
+      return result;
+    });
 
     // --- Layer 2: Priority order (stateful — user can reorder via drag) ---
     // Default auto-priority: highest gap first (same heuristic as before the refactor).
-    const priorityOrder = ref([])
+    const priorityOrder = ref([]);
 
     const defaultPriorityOrder = computed(() =>
-      [...candidates.value].sort((a, b) => b.gap - a.gap).map(c => c.sku)
-    )
+      [...candidates.value].sort((a, b) => b.gap - a.gap).map((c) => c.sku),
+    );
 
     // Initialize priority whenever the candidate set changes (data load).
     // Restocking.vue loads once on mount and has no filter watchers, so this runs once —
     // the user's manual reorder is preserved for the session.
-    watch(candidates, () => {
-      priorityOrder.value = [...defaultPriorityOrder.value]
-    }, { immediate: true })
+    watch(
+      candidates,
+      () => {
+        priorityOrder.value = [...defaultPriorityOrder.value];
+      },
+      { immediate: true },
+    );
 
     const resetPriority = () => {
-      priorityOrder.value = [...defaultPriorityOrder.value]
-    }
+      priorityOrder.value = [...defaultPriorityOrder.value];
+    };
 
     // True when the user has manually reordered — gates the Reset button visibility.
     const isCustomOrder = computed(() => {
-      if (priorityOrder.value.length !== defaultPriorityOrder.value.length) return false
-      return priorityOrder.value.some((sku, i) => sku !== defaultPriorityOrder.value[i])
-    })
+      if (priorityOrder.value.length !== defaultPriorityOrder.value.length)
+        return false;
+      return priorityOrder.value.some(
+        (sku, i) => sku !== defaultPriorityOrder.value[i],
+      );
+    });
 
     // --- Layer 3: Greedy budget allocation in user's priority order ---
     // O(1) lookup for building recommendations from priorityOrder.
     const candidatesBySku = computed(() => {
-      const m = new Map()
-      for (const c of candidates.value) m.set(c.sku, c)
-      return m
-    })
+      const m = new Map();
+      for (const c of candidates.value) m.set(c.sku, c);
+      return m;
+    });
 
     // Recomputes when budget OR priorityOrder changes → drag instantly re-flows allocation.
     // Rows that can't receive even 1 unit are kept (allocatedQty=0) so the user can
     // see what was excluded by budget constraints.
     const recommendations = computed(() => {
-      let remaining = budget.value
-      const result = []
+      let remaining = budget.value;
+      const result = [];
 
       for (const sku of priorityOrder.value) {
-        const candidate = candidatesBySku.value.get(sku)
-        if (!candidate) continue  // defensive — stale SKU in priorityOrder
+        const candidate = candidatesBySku.value.get(sku);
+        if (!candidate) continue; // defensive — stale SKU in priorityOrder
 
-        const fullCost = candidate.gap * candidate.unit_cost
-        let allocatedQty
+        const fullCost = candidate.gap * candidate.unit_cost;
+        let allocatedQty;
         if (fullCost <= remaining) {
           // Entire gap fits in budget
-          allocatedQty = candidate.gap
-          remaining -= fullCost
+          allocatedQty = candidate.gap;
+          remaining -= fullCost;
         } else {
           // Partial allocation: as many units as remaining budget covers.
           // Once budget is exhausted, all subsequent items get 0 units.
-          const partialQty = Math.floor(remaining / candidate.unit_cost)
-          allocatedQty = partialQty > 0 ? partialQty : 0
-          remaining = 0
+          const partialQty = Math.floor(remaining / candidate.unit_cost);
+          allocatedQty = partialQty > 0 ? partialQty : 0;
+          remaining = 0;
         }
 
         result.push({
           ...candidate,
           allocatedQty,
-          lineTotal: allocatedQty * candidate.unit_cost
-        })
+          lineTotal: allocatedQty * candidate.unit_cost,
+        });
       }
 
-      return result
-    })
+      return result;
+    });
 
     // --- Derived budget figures ---
     const allocatedTotal = computed(() =>
-      recommendations.value.reduce((sum, rec) => sum + rec.lineTotal, 0)
-    )
+      recommendations.value.reduce((sum, rec) => sum + rec.lineTotal, 0),
+    );
 
-    const remainingBudget = computed(() => budget.value - allocatedTotal.value)
+    const remainingBudget = computed(() => budget.value - allocatedTotal.value);
 
     // --- Items to include in POST body (only those actually allocated) ---
     const orderItems = computed(() =>
       recommendations.value
-        .filter(rec => rec.allocatedQty > 0)
-        .map(rec => ({
+        .filter((rec) => rec.allocatedQty > 0)
+        .map((rec) => ({
           sku: rec.sku,
           name: rec.name,
           quantity: rec.allocatedQty,
-          unit_cost: rec.unit_cost
-        }))
-    )
+          unit_cost: rec.unit_cost,
+        })),
+    );
 
     // --- Data loading ---
     const loadData = async () => {
-      loading.value = true
-      error.value = null
+      loading.value = true;
+      error.value = null;
       try {
         // Fetch forecasts and full (unfiltered) inventory in parallel.
         // Inventory is fetched without filters because we need unit_cost for
         // every possible forecast SKU regardless of the active warehouse/category filter.
         const [forecastsData, inventoryData] = await Promise.all([
           api.getDemandForecasts(),
-          api.getInventory()
-        ])
-        forecasts.value = forecastsData
-        inventory.value = inventoryData
+          api.getInventory(),
+        ]);
+        forecasts.value = forecastsData;
+        inventory.value = inventoryData;
       } catch (err) {
-        error.value = 'Failed to load restocking data: ' + err.message
-        console.error(err)
+        error.value = "Failed to load restocking data: " + err.message;
+        console.error(err);
       } finally {
-        loading.value = false
+        loading.value = false;
       }
-    }
+    };
 
     // --- Submit restocking order ---
     const placeOrder = async () => {
-      if (orderItems.value.length === 0) return
-      submitting.value = true
+      if (orderItems.value.length === 0) return;
+      submitting.value = true;
       try {
-        const response = await api.createRestockingOrder(orderItems.value)
-        successMessage.value = t('restocking.orderPlaced', { orderNumber: response.order_number })
+        const response = await api.createRestockingOrder(orderItems.value);
+        successMessage.value = t("restocking.orderPlaced", {
+          orderNumber: response.order_number,
+        });
         // Auto-clear the success banner after 5 seconds
         setTimeout(() => {
-          successMessage.value = null
-        }, 5000)
+          successMessage.value = null;
+        }, 5000);
       } catch (err) {
-        error.value = 'Failed to submit restocking order: ' + err.message
-        console.error(err)
+        error.value = "Failed to submit restocking order: " + err.message;
+        console.error(err);
       } finally {
-        submitting.value = false
+        submitting.value = false;
       }
-    }
-
+    };
 
     // --- Drag-and-drop state & handlers (native HTML5 DnD) ---
-    const draggedIndex = ref(null)
-    const dragOverIndex = ref(null)
+    const draggedIndex = ref(null);
+    const dragOverIndex = ref(null);
 
     const onDragStart = (index) => {
-      draggedIndex.value = index
-    }
+      draggedIndex.value = index;
+    };
 
     const onDragOver = (index) => {
-      dragOverIndex.value = index
-    }
+      dragOverIndex.value = index;
+    };
 
     const onDragEnd = () => {
-      draggedIndex.value = null
-      dragOverIndex.value = null
-    }
+      draggedIndex.value = null;
+      dragOverIndex.value = null;
+    };
 
     const onDrop = (dropIndex) => {
       if (draggedIndex.value === null || draggedIndex.value === dropIndex) {
-        onDragEnd()
-        return
+        onDragEnd();
+        return;
       }
       // Reorder priorityOrder: remove dragged SKU from its slot, insert at drop slot
-      const order = [...priorityOrder.value]
-      const [moved] = order.splice(draggedIndex.value, 1)
-      order.splice(dropIndex, 0, moved)
-      priorityOrder.value = order
-      onDragEnd()
-    }
+      const order = [...priorityOrder.value];
+      const [moved] = order.splice(draggedIndex.value, 1);
+      order.splice(dropIndex, 0, moved);
+      priorityOrder.value = order;
+      onDragEnd();
+    };
 
-    onMounted(loadData)
+    onMounted(loadData);
 
     return {
       t,
@@ -368,10 +405,10 @@ export default {
       onDragEnd,
       onDrop,
       resetPriority,
-      isCustomOrder
-    }
-  }
-}
+      isCustomOrder,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -411,12 +448,16 @@ export default {
   background: #2563eb;
   cursor: pointer;
   border: 3px solid #ffffff;
-  box-shadow: 0 0 0 2px #2563eb, 0 2px 6px rgba(37, 99, 235, 0.3);
+  box-shadow:
+    0 0 0 2px #2563eb,
+    0 2px 6px rgba(37, 99, 235, 0.3);
   transition: box-shadow 0.15s ease;
 }
 
 .budget-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 3px #bfdbfe, 0 2px 8px rgba(37, 99, 235, 0.4);
+  box-shadow:
+    0 0 0 3px #bfdbfe,
+    0 2px 8px rgba(37, 99, 235, 0.4);
 }
 
 .budget-slider::-moz-range-thumb {
@@ -520,7 +561,9 @@ export default {
   font-size: 0.938rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .place-order-btn:hover:not(:disabled) {
